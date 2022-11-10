@@ -1,4 +1,4 @@
-using minecraftServers.Servers;
+using minecraftServers.Models;
 using minecraftServers.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);

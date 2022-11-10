@@ -1,16 +1,15 @@
-﻿namespace minecraftServers.Repositories
+﻿namespace minecraftServers.Repositories;
+
+using minecraftServers.Models;
+public interface IServersRepository
 {
-    using minecraftServers.Servers;
-    public interface IServersRepository
-    {
-        List<ServerList> GetAll();
+    List<Server> GetAll();
 
-        bool Delete(CustomServer server);
+    bool Delete(string ip);
 
-        ServerList Add(CustomServer server);
+    Server Add(CustomServer server);
 
-        ServerList GetIp(string ip);
+    Server GetIp(string ip);
 
-        ServerList GetName(string name);
-    }
+    Server GetName(string name);
 }

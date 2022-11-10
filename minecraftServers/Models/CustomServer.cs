@@ -1,4 +1,4 @@
-﻿namespace minecraftServers.Servers;
+﻿namespace minecraftServers.Models;
 
 public class CustomServer
 {

@@ -1,8 +1,8 @@
-﻿namespace minecraftServers.Servers;
+﻿namespace minecraftServers.Models;
 
-public class ServerList
+public class Server
 {
-    public ServerList(string ip, int online, string name)
+    public Server(string ip, int online, string name)
     {
         Ip = ip;
         Online = online;

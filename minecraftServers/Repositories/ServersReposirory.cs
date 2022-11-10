@@ -1,37 +1,37 @@
-﻿using minecraftServers.Servers;
+﻿using minecraftServers.Models;
 
 
 namespace minecraftServers.Repositories;
 
 public class ServersReposirory : IServersRepository
 {
-    private readonly List<ServerList> _servers = new();
-    public ServerList Add(CustomServer server)
+    private readonly List<Server> _servers = new();
+    public Server Add(CustomServer server)
     {
         Random random = new Random();
         int serverOnline = random.Next(0, 999);
-        var newServer = new ServerList(server.Ip, serverOnline, server.Name);
+        var newServer = new Server(server.Ip, serverOnline, server.Name);
         _servers.Add(newServer);
         return newServer;
 
     }
 
-    public bool Delete(CustomServer server)
+    public bool Delete(string ip)
     {
-       var servName = _servers.FirstOrDefault(x => x.Name == server.Name);
+       var servName = _servers.FirstOrDefault(x => x.Ip == ip);
         _servers.Remove(servName);
         return true;
     }
 
-    public List<ServerList> GetAll()
+    public List<Server> GetAll()
     {
         return _servers;
     }
-    public ServerList GetIp(string ip)
+    public Server GetIp(string ip)
     {
        return _servers.FirstOrDefault(x => x.Ip == ip);
     }
-    public ServerList GetName(string name)
+    public Server GetName(string name)
     {
         return _servers.FirstOrDefault(x => x.Name == name);
     }

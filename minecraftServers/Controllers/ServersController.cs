@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using minecraftServers.Repositories;
-using minecraftServers.Servers;
+using minecraftServers.Models;
 using System.Text.RegularExpressions;
 
 namespace minecraftServers.Controllers;
@@ -10,42 +10,39 @@ namespace minecraftServers.Controllers;
 public class ServersController : ControllerBase
 {
     private readonly IServersRepository _serversRep;
-    private readonly List<ServerList> _servers = new();
+    private readonly Regex ip = new(@"(([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|2[0-4]\d|25[0-5])");
     public ServersController(IServersRepository serverRep)
     {
         _serversRep = serverRep;
     }
 
     [HttpGet]
-    public ActionResult<List<ServerList>> GetAll()
+    public ActionResult<List<Server>> GetAll()
     {
         return Ok(_serversRep.GetAll());
     }
 
-    [HttpPost("/api/servers/add")]
-    public ActionResult<ServerList> Add(CustomServer server)
+    [HttpPost]
+    public ActionResult<Server> Add(CustomServer server)
     { 
-        ServerList? servers = _serversRep.GetName(server.Name);
-        ServerList? serversIp = _serversRep.GetIp(server.Ip);
-        Regex ip = new Regex(@"(([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|2[0-4]\d|25[0-5])");
+        Server? serversIp = _serversRep.GetIp(server.Ip);
         if (!ip.IsMatch(server.Ip))
         {
-            return NotFound("Ip is incorrect !");
+            return BadRequest("Ip is incorrect !");
         }
-        if (servers != null || serversIp != null)
+        if (serversIp != null)
         {
             return NotFound("This server already exist !");
         }
         return Ok(_serversRep.Add(server));
     }
 
-    [HttpPost("/api/servers/delete")]
-    public ActionResult Delete(CustomServer server)
+    [HttpDelete("{ip}")]
+    public ActionResult Delete(string ip)
     {
-        ServerList? servers = _serversRep.GetName(server.Name);
-        ServerList? serversIp = _serversRep.GetIp(server.Ip);
-        _serversRep.Delete(server);
-        if (servers == null || serversIp == null)
+        Server? serversIp = _serversRep.GetIp(ip);
+        _serversRep.Delete(ip);
+        if (serversIp == null)
         {
             return NotFound("We cannot find this server :(");
         }
