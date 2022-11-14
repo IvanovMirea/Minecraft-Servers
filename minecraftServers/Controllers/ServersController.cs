@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using minecraftServers.Repositories;
-using minecraftServers.Models;
+using MinecraftServers.Repositories;
+using MinecraftServers.Models;
 using System.Text.RegularExpressions;
 
-namespace minecraftServers.Controllers;
+namespace MinecraftServers.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -22,30 +22,52 @@ public class ServersController : ControllerBase
         return Ok(_serversRep.GetAll());
     }
 
+    [HttpGet("{id}")]
+    public ActionResult<Server> GetById(uint id)
+    {
+        if (_serversRep.GetById(id) == null)
+            return NotFound("We can't find this server");
+        return Ok(_serversRep.GetById(id));
+    }
+
     [HttpPost]
-    public ActionResult<Server> Add(CustomServer server)
-    { 
-        Server? serversIp = _serversRep.GetIp(server.Ip);
+    public ActionResult<Server> Add(ServerDto server)
+    {
         if (!ip.IsMatch(server.Ip))
         {
             return BadRequest("Ip is incorrect !");
         }
-        if (serversIp != null)
+        var receivedServer = _serversRep.GetByIp(server.Ip);
+        if (receivedServer != null)
         {
-            return NotFound("This server already exist !");
+            return BadRequest("This server already exist !");
         }
         return Ok(_serversRep.Add(server));
     }
 
-    [HttpDelete("{ip}")]
-    public ActionResult Delete(string ip)
+    [HttpDelete("{id}")]
+    public ActionResult Delete(uint id)
     {
-        Server? serversIp = _serversRep.GetIp(ip);
-        _serversRep.Delete(ip);
-        if (serversIp == null)
+        var server = _serversRep.GetById(id);
+        if (server == null)
         {
             return NotFound("We cannot find this server :(");
         }
+        _serversRep.Delete(id);
         return Ok();
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult Update(ServerDto server, uint id)
+    {
+        if (_serversRep.GetById(id) == null)
+        {
+            return NotFound("Sorry, we can't find this server");
+        }
+        var exsistedServer = _serversRep.GetById(id);
+        var updatedServer = new ServerDto(server.Ip, server.Name);
+        _serversRep.Delete(exsistedServer.Id);
+        _serversRep.AddUnique(updatedServer, id);
+        return Ok(updatedServer);
     }
 }

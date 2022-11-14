@@ -1,5 +1,4 @@
-using minecraftServers.Models;
-using minecraftServers.Repositories;
+using MinecraftServers.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();

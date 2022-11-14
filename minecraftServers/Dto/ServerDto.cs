@@ -1,8 +1,8 @@
-﻿namespace minecraftServers.Models;
+﻿namespace MinecraftServers.Models;
 
-public class CustomServer
+public class ServerDto
 {
-    public CustomServer(string ip, string name)
+    public ServerDto(string ip, string name)
     {
         Ip = ip;
         Name = name;
