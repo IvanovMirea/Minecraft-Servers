@@ -1,4 +1,4 @@
-﻿namespace MinecraftServers.Models;
+﻿namespace MinecraftServers.Dto;
 
 public class ServerDto
 {

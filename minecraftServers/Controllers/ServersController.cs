@@ -31,7 +31,7 @@ public class ServersController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Server> Add(ServerDto server)
+    public ActionResult<Server> Add(Server server)
     {
         if (!ip.IsMatch(server.Ip))
         {
@@ -58,16 +58,16 @@ public class ServersController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public ActionResult Update(ServerDto server, uint id)
+    public ActionResult Update(Server server, uint id)
     {
-        if (_serversRep.GetById(id) == null)
+        var exsistedServer = _serversRep.GetById(id);
+        if (exsistedServer == null)
         {
             return NotFound("Sorry, we can't find this server");
         }
-        var exsistedServer = _serversRep.GetById(id);
-        var updatedServer = new ServerDto(server.Ip, server.Name);
+        //var updatedServer = server(server.Ip, server.Online, server.Name, id);
         _serversRep.Delete(exsistedServer.Id);
-        _serversRep.AddUnique(updatedServer, id);
-        return Ok(updatedServer);
+        _serversRep.AddUnique(server, id);
+        return Ok(server);
     }
 }

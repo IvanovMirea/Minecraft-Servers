@@ -8,7 +8,7 @@ public interface IServersRepository
 
     bool Delete(uint id);
 
-    Server Add(ServerDto server);
+    Server Add(Server server);
 
     Server GetByIp(string ip);
 
@@ -16,5 +16,5 @@ public interface IServersRepository
 
     Server GetById(uint id);
 
-    Server AddUnique(ServerDto server, uint id);
+    Server AddUnique(Server server, uint id);
 }

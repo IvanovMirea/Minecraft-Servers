@@ -5,16 +5,21 @@ namespace MinecraftServers.Repositories;
 public class ServersReposirory : IServersRepository
 {
     private readonly List<Server> _servers = new();
-    public Server Add(ServerDto server)
+    public Server Add(Server server)
     {
         Random random = new Random();
-        uint id = 0;
         int serverOnline = random.Next(0, 999);
-        var newServer = new Server(server.Ip, serverOnline, server.Name, id);
-        if (_servers.Count == 0)
+        int numberOfServers = _servers.Count;
+        server.Id = Convert.ToUInt32(numberOfServers); 
+        if (server.Id == 0)
         {
-            _servers.Add(newServer);
-            return newServer;
+            uint id = 0;
+            var newServer = new Server(server.Ip, serverOnline, server.Name, id);
+            if (_servers.Count == 0)
+            {
+                _servers.Add(newServer);
+                return newServer;
+            }
         }
         var newId = _servers.Last().Id + 1;
         var nextServer = new Server(server.Ip, serverOnline, server.Name, newId);
@@ -23,7 +28,7 @@ public class ServersReposirory : IServersRepository
 
     }
 
-    public Server AddUnique(ServerDto server, uint id)
+    public Server AddUnique(Server server, uint id)
     {
         Random random = new Random();
         int serverOnline = random.Next(0, 999);
