@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServers", "minecraftServers\MinecraftServers.csproj", "{CBA0950E-9ECD-4D6D-A58B-2DB1E0FC1AD0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{26B5ABB3-BAFF-4AA2-90D7-C17081F859C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CBA0950E-9ECD-4D6D-A58B-2DB1E0FC1AD0} = {26B5ABB3-BAFF-4AA2-90D7-C17081F859C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46A1625A-4172-4FD4-94E6-727CECC1F65C}

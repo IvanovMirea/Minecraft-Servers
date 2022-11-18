@@ -2,6 +2,7 @@
 using MinecraftServers.Repositories;
 using MinecraftServers.Models;
 using System.Text.RegularExpressions;
+using MinecraftServers.Dto;
 
 namespace MinecraftServers.Controllers;
 
@@ -58,16 +59,16 @@ public class ServersController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public ActionResult Update(Server server, uint id)
+    public ActionResult Update(ServerDto server, uint id)
     {
         var exsistedServer = _serversRep.GetById(id);
         if (exsistedServer == null)
         {
             return NotFound("Sorry, we can't find this server");
         }
-        //var updatedServer = server(server.Ip, server.Online, server.Name, id);
+        var updatedServer = new Server(server.Ip, exsistedServer.Online, server.Name, id);
         _serversRep.Delete(exsistedServer.Id);
-        _serversRep.AddUnique(server, id);
+        _serversRep.AddUnique(updatedServer,id);
         return Ok(server);
     }
 }
