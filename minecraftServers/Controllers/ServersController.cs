@@ -32,8 +32,10 @@ public class ServersController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Server> Add(Server server)
+    public ActionResult<Server> Add(ServerDto server)
     {
+        var online = 0;
+        uint id = 0;
         if (!ip.IsMatch(server.Ip))
         {
             return BadRequest("Ip is incorrect !");
@@ -43,7 +45,8 @@ public class ServersController : ControllerBase
         {
             return BadRequest("This server already exist !");
         }
-        return Ok(_serversRep.Add(server));
+        var updatedServer = new Server(server.Ip, online, server.Name, id);
+        return Ok(_serversRep.Add(updatedServer));
     }
 
     [HttpDelete("{id}")]
