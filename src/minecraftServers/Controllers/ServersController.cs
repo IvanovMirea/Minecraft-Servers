@@ -20,6 +20,7 @@ public class ServersController : ControllerBase
     [HttpGet]
     public ActionResult<List<Server>> GetAll()
     {
+
         return Ok(_serversRep.GetAll());
     }
 

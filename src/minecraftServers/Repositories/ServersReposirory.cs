@@ -1,29 +1,38 @@
 ﻿using MinecraftServers.Models;
+using MinecraftServers.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace MinecraftServers.Repositories;
 
 public class ServersReposirory : IServersRepository
 {
-    private readonly List<Server> _servers = new();
+    private readonly ServerContext _db;
+
+    public ServersReposirory(ServerContext context)
+    {
+        _db = context;
+    }
     public Server Add(Server server)
     {
         Random random = new Random();
         int serverOnline = random.Next(0, 999);
-        int numberOfServers = _servers.Count;
+        int numberOfServers = _db.Servers.Count();
         server.Id = Convert.ToUInt32(numberOfServers); 
         if (server.Id == 0)
         {
             uint id = 0;
             var newServer = new Server(server.Ip, serverOnline, server.Name, id);
-            if (_servers.Count == 0)
+            if (_db.Servers.ToList().Count == 0)
             {
-                _servers.Add(newServer);
+                _db.Add(newServer);
+                _db.SaveChanges();
                 return newServer;
             }
         }
-        var newId = _servers.Last().Id + 1;
+        var newId = _db.Servers.Last().Id + 1;
         var nextServer = new Server(server.Ip, serverOnline, server.Name, newId);
-        _servers.Add(nextServer);
+        _db.Add(nextServer);
+        _db.SaveChanges();
         return nextServer;
 
     }
@@ -33,33 +42,36 @@ public class ServersReposirory : IServersRepository
         Random random = new Random();
         int serverOnline = random.Next(0, 999);
         var newServer = new Server(server.Ip, serverOnline, server.Name, id);
-        _servers.Add(newServer);
+        _db.Add(newServer);
+        _db.SaveChanges();
         return newServer;
     }
 
     public bool Delete(uint id)
     {
-       var servName = _servers.FirstOrDefault(x => x.Id == id);
+       var servName = _db.Servers.FirstOrDefault(x => x.Id == id);
         if (servName == null)
             return false;
-        _servers.Remove(servName);
+        _db.Remove(servName);
+        _db.SaveChanges();
         return true;
+        
     }
 
-    public List<Server> GetAll()
+    public IEnumerable<Server> GetAll()
     {
-        return _servers;
+        return _db.Servers.AsNoTracking().ToArray();
     }
     public Server? GetByIp(string ip)
     {
-       return _servers.FirstOrDefault(x => x.Ip == ip);
+       return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Ip == ip);
     }
     public Server? GetName(string name)
     {
-        return _servers.FirstOrDefault(x => x.Name == name);
+        return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Name == name);
     }
     public Server? GetById(uint id)
     {
-        return _servers.FirstOrDefault(x => x.Id == id);
+        return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Id == id);
     }
 }

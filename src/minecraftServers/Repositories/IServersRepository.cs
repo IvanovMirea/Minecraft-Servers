@@ -4,7 +4,7 @@ using MinecraftServers.Models;
 
 public interface IServersRepository
 {
-    List<Server> GetAll();
+    IEnumerable<Server> GetAll();
 
     bool Delete(uint id);
 
