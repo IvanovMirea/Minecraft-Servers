@@ -1,5 +1,6 @@
 ﻿namespace MinecraftServers.Models;
 
+[IdCountAtt]
 public class Server
 {
     public Server(string ip, int online, string name, uint id)
@@ -15,4 +16,9 @@ public class Server
     public string Name { get; set; }
     public uint Id { get; set; }
 
+}
+public class IdCountAtt : Attribute
+{
+    public int Id { get; }
+    public IdCountAtt() => Id = Id + 1;
 }

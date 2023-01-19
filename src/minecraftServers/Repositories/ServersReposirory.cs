@@ -17,20 +17,7 @@ public class ServersReposirory : IServersRepository
         Random random = new Random();
         int serverOnline = random.Next(0, 999);
         int numberOfServers = _db.Servers.Count();
-        server.Id = Convert.ToUInt32(numberOfServers); 
-        if (server.Id == 0)
-        {
-            uint id = 0;
-            var newServer = new Server(server.Ip, serverOnline, server.Name, id);
-            if (_db.Servers.ToList().Count == 0)
-            {
-                _db.Add(newServer);
-                _db.SaveChanges();
-                return newServer;
-            }
-        }
-        var newId = _db.Servers.Last().Id + 1;
-        var nextServer = new Server(server.Ip, serverOnline, server.Name, newId);
+        var nextServer = new Server(server.Ip, serverOnline, server.Name, server.Id);
         _db.Add(nextServer);
         _db.SaveChanges();
         return nextServer;
