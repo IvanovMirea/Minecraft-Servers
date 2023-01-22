@@ -15,26 +15,14 @@ public class ServersReposirory : IServersRepository
     public Server Add(Server server)
     {
         Random random = new Random();
-        int serverOnline = random.Next(0, 999);
-        int numberOfServers = _db.Servers.Count();
-        var nextServer = new Server(server.Ip, serverOnline, server.Name, server.Id);
-        _db.Add(nextServer);
+        server.Online = random.Next(0, 1000);
+        _db.Add(server);
         _db.SaveChanges();
-        return nextServer;
-
+        return server;
     }
 
-    public Server AddUnique(Server server, uint id)
-    {
-        Random random = new Random();
-        int serverOnline = random.Next(0, 999);
-        var newServer = new Server(server.Ip, serverOnline, server.Name, id);
-        _db.Add(newServer);
-        _db.SaveChanges();
-        return newServer;
-    }
 
-    public bool Delete(uint id)
+    public bool Delete(int id)
     {
        var servName = _db.Servers.FirstOrDefault(x => x.Id == id);
         if (servName == null)
@@ -42,23 +30,13 @@ public class ServersReposirory : IServersRepository
         _db.Remove(servName);
         _db.SaveChanges();
         return true;
-        
     }
 
-    public IEnumerable<Server> GetAll()
-    {
-        return _db.Servers.AsNoTracking().ToArray();
-    }
-    public Server? GetByIp(string ip)
-    {
-       return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Ip == ip);
-    }
-    public Server? GetName(string name)
-    {
-        return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Name == name);
-    }
-    public Server? GetById(uint id)
-    {
-        return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Id == id);
-    }
+    public IEnumerable<Server> GetAll() { return _db.Servers.AsNoTracking().ToArray(); }
+
+    public Server? GetByIp(string ip) { return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Ip == ip); }
+
+    public Server? GetName(string name) { return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Name == name); }
+
+    public Server? GetById(int id) { return _db.Servers.AsNoTracking().FirstOrDefault(x => x.Id == id); }
 }

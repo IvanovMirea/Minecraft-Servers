@@ -20,12 +20,11 @@ public class ServersController : ControllerBase
     [HttpGet]
     public ActionResult<List<Server>> GetAll()
     {
-
         return Ok(_serversRep.GetAll());
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Server> GetById(uint id)
+    public ActionResult<Server> GetById(int id)
     {
         var serverById = _serversRep.GetById(id);
         if (serverById == null)
@@ -43,21 +42,21 @@ public class ServersController : ControllerBase
         var receivedServer = _serversRep.GetByIp(server.Ip);
         if (receivedServer != null)
         {
-            return BadRequest("This server already exist !");
+            return BadRequest("This server is already exist !");
         }
         var updatedServer = new Server(server.Ip, 0, server.Name, 0);
         return Ok(_serversRep.Add(updatedServer));
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(uint id)
+    public ActionResult Delete(int id)
     {
         _serversRep.Delete(id);
         return Ok();
     }
 
     [HttpPut("{id}")]
-    public ActionResult Update(ServerDto server, uint id)
+    public ActionResult Update(ServerDto server, int id)
     {
         var exsistedServer = _serversRep.GetById(id);
         if (exsistedServer == null)
@@ -66,7 +65,7 @@ public class ServersController : ControllerBase
         }
         var updatedServer = new Server(server.Ip, exsistedServer.Online, server.Name, id);
         _serversRep.Delete(exsistedServer.Id);
-        _serversRep.AddUnique(updatedServer, id);
+        _serversRep.Add(updatedServer);
         return Ok(server);
     }
 }

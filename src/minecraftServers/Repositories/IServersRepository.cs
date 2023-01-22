@@ -6,7 +6,7 @@ public interface IServersRepository
 {
     IEnumerable<Server> GetAll();
 
-    bool Delete(uint id);
+    bool Delete(int id);
 
     Server Add(Server server);
 
@@ -14,7 +14,6 @@ public interface IServersRepository
 
     Server GetName(string name);
 
-    Server GetById(uint id);
+    Server GetById(int id);
 
-    Server AddUnique(Server server, uint id);
 }
