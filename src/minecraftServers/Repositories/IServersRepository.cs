@@ -1,5 +1,6 @@
 ﻿namespace MinecraftServers.Repositories;
 
+using MinecraftServers.Dto;
 using MinecraftServers.Models;
 
 public interface IServersRepository
@@ -15,5 +16,7 @@ public interface IServersRepository
     Server GetName(string name);
 
     Server GetById(int id);
+
+    Server Update(ServerDto server, int id);
 
 }

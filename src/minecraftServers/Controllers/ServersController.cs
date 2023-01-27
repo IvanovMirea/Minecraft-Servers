@@ -58,14 +58,11 @@ public class ServersController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult Update(ServerDto server, int id)
     {
-        var exsistedServer = _serversRep.GetById(id);
-        if (exsistedServer == null)
+        var isFound = _serversRep.Update(server,id);
+        if (isFound == null)
         {
-            return NotFound("Sorry, we can't find this server");
+            return NotFound("Sorry, we can't find this server :(");
         }
-        var updatedServer = new Server(server.Ip, exsistedServer.Online, server.Name, id);
-        _serversRep.Delete(exsistedServer.Id);
-        _serversRep.Add(updatedServer);
-        return Ok(server);
+        return Ok(isFound);
     }
 }
