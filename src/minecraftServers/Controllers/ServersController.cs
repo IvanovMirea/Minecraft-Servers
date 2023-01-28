@@ -18,7 +18,7 @@ public class ServersController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Server>> GetAll()
+    public ActionResult<Server[]> GetAll()
     {
         return Ok(_serversRep.GetAll());
     }
@@ -56,11 +56,11 @@ public class ServersController : ControllerBase
         { 
             return NotFound("Sorry, we can't find this server");
         }
-        return Ok();
+        return Ok("Server are successfully deleted!");
     }
 
     [HttpPut("{id}")]
-    public ActionResult Update(ServerDto server, int id)
+    public ActionResult<Server> Update(ServerDto server, int id)
     {
         var serv = _serversRep.Update(server,id);
         if (serv == null)
