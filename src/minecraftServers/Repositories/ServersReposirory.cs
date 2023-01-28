@@ -33,7 +33,7 @@ public class ServersReposirory : IServersRepository
         return true;
     }
     
-    public Server Update(ServerDto server, int id)
+    public Server? Update(ServerDto server, int id)
     {
         var changedEntity = _db.Servers.FirstOrDefault(x => x.Id == id);
         if (changedEntity == null)

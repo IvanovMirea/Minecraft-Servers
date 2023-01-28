@@ -51,18 +51,22 @@ public class ServersController : ControllerBase
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
-        _serversRep.Delete(id);
+        var servToDelete = _serversRep.Delete(id);
+        if (servToDelete == false) 
+        { 
+            return NotFound("Sorry, we can't find this server");
+        }
         return Ok();
     }
 
     [HttpPut("{id}")]
     public ActionResult Update(ServerDto server, int id)
     {
-        var isFound = _serversRep.Update(server,id);
-        if (isFound == null)
+        var serverCoincidence = _serversRep.Update(server,id);
+        if (serverCoincidence == null)
         {
             return NotFound("Sorry, we can't find this server :(");
         }
-        return Ok(isFound);
+        return Ok(serverCoincidence);
     }
 }

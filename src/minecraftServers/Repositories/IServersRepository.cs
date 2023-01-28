@@ -17,6 +17,6 @@ public interface IServersRepository
 
     Server GetById(int id);
 
-    Server Update(ServerDto server, int id);
+    Server? Update(ServerDto server, int id);
 
 }
