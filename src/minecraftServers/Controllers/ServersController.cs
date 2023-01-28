@@ -18,13 +18,13 @@ public class ServersController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Server>> GetAll()
+    public ActionResult<Server[]> GetAll()
     {
         return Ok(_serversRep.GetAll());
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Server> GetById(uint id)
+    public ActionResult<Server> GetById(int id)
     {
         var serverById = _serversRep.GetById(id);
         if (serverById == null)
@@ -42,30 +42,31 @@ public class ServersController : ControllerBase
         var receivedServer = _serversRep.GetByIp(server.Ip);
         if (receivedServer != null)
         {
-            return BadRequest("This server already exist !");
+            return BadRequest("This server is already exist !");
         }
         var updatedServer = new Server(server.Ip, 0, server.Name, 0);
         return Ok(_serversRep.Add(updatedServer));
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(uint id)
+    public ActionResult Delete(int id)
     {
-        _serversRep.Delete(id);
-        return Ok();
+        var servToDelete = _serversRep.Delete(id);
+        if (servToDelete == false) 
+        { 
+            return NotFound("Sorry, we can't find this server");
+        }
+        return Ok("Server are successfully deleted!");
     }
 
     [HttpPut("{id}")]
-    public ActionResult Update(ServerDto server, uint id)
+    public ActionResult<Server> Update(ServerDto server, int id)
     {
-        var exsistedServer = _serversRep.GetById(id);
-        if (exsistedServer == null)
+        var serv = _serversRep.Update(server,id);
+        if (serv == null)
         {
-            return NotFound("Sorry, we can't find this server");
+            return NotFound("Sorry, we can't find this server :(");
         }
-        var updatedServer = new Server(server.Ip, exsistedServer.Online, server.Name, id);
-        _serversRep.Delete(exsistedServer.Id);
-        _serversRep.AddUnique(updatedServer, id);
-        return Ok(server);
+        return Ok(serv);
     }
 }
