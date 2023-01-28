@@ -62,11 +62,11 @@ public class ServersController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult Update(ServerDto server, int id)
     {
-        var serverCoincidence = _serversRep.Update(server,id);
-        if (serverCoincidence == null)
+        var serv = _serversRep.Update(server,id);
+        if (serv == null)
         {
             return NotFound("Sorry, we can't find this server :(");
         }
-        return Ok(serverCoincidence);
+        return Ok(serv);
     }
 }

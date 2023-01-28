@@ -13,6 +13,7 @@ public class ServersReposirory : IServersRepository
     {
         _db = context;
     }
+
     public Server Add(Server server)
     {
         Random random = new Random();
@@ -46,7 +47,7 @@ public class ServersReposirory : IServersRepository
         return changedEntity;
     }
 
-    public IEnumerable<Server> GetAll() => _db.Servers.AsNoTracking().ToArray();
+    public Server[] GetAll() => _db.Servers.AsNoTracking().ToArray();
 
     public Server? GetByIp(string ip) => _db.Servers.AsNoTracking().FirstOrDefault(x => x.Ip == ip);
 
